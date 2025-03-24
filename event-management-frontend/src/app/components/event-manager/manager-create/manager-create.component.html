@@ -1,4 +1,121 @@
-<div>
-  <h2>Create Manager</h2>
-  <!-- Form for creating a manager -->
+<div class="create-manager-container">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">Create Event Manager</h2>
+      <a routerLink="/managers" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="managerForm" (ngSubmit)="onSubmit()">
+        <div *ngIf="error" class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+
+        <div class="row">
+          <!-- First Name -->
+          <div class="col-md-6 mb-3">
+            <label for="firstName" class="form-label">First Name *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="firstName" 
+              formControlName="firstName" 
+              [ngClass]="{'is-invalid': managerForm.get('firstName')?.invalid && managerForm.get('firstName')?.touched}"
+            >
+            <div class="invalid-feedback" *ngIf="managerForm.get('firstName')?.invalid && managerForm.get('firstName')?.touched">
+              <span *ngIf="managerForm.get('firstName')?.errors?.['required']">First name is required.</span>
+              <span *ngIf="managerForm.get('firstName')?.errors?.['minlength']">First name must be at least 2 characters.</span>
+            </div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="col-md-6 mb-3">
+            <label for="lastName" class="form-label">Last Name *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="lastName" 
+              formControlName="lastName"
+              [ngClass]="{'is-invalid': managerForm.get('lastName')?.invalid && managerForm.get('lastName')?.touched}"
+            >
+            <div class="invalid-feedback" *ngIf="managerForm.get('lastName')?.invalid && managerForm.get('lastName')?.touched">
+              <span *ngIf="managerForm.get('lastName')?.errors?.['required']">Last name is required.</span>
+              <span *ngIf="managerForm.get('lastName')?.errors?.['minlength']">Last name must be at least 2 characters.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email *</label>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="email" 
+            formControlName="email"
+            [ngClass]="{'is-invalid': managerForm.get('email')?.invalid && managerForm.get('email')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="managerForm.get('email')?.invalid && managerForm.get('email')?.touched">
+            Please enter a valid email address.
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone Number *</label>
+          <input 
+            type="tel" 
+            class="form-control" 
+            id="phone" 
+            formControlName="phone"
+            [ngClass]="{'is-invalid': managerForm.get('phone')?.invalid && managerForm.get('phone')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="managerForm.get('phone')?.invalid && managerForm.get('phone')?.touched">
+            Please enter a valid phone number.
+          </div>
+        </div>
+
+        <!-- Organization -->
+        <div class="mb-3">
+          <label for="organization" class="form-label">Organization *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="organization" 
+            formControlName="organization"
+            [ngClass]="{'is-invalid': managerForm.get('organization')?.invalid && managerForm.get('organization')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="managerForm.get('organization')?.invalid && managerForm.get('organization')?.touched">
+            Organization is required.
+          </div>
+        </div>
+
+        <!-- Role -->
+        <div class="mb-3">
+          <label for="role" class="form-label">Role *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="role" 
+            formControlName="role"
+            [ngClass]="{'is-invalid': managerForm.get('role')?.invalid && managerForm.get('role')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="managerForm.get('role')?.invalid && managerForm.get('role')?.touched">
+            Role is required.
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid gap-2 mt-4">
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="loading || managerForm.invalid"
+          >
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Create Manager
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

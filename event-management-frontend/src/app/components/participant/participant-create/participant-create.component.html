@@ -1,4 +1,134 @@
-<div>
-  <h2>Create Participant</h2>
-  <!-- Form for creating a participant -->
+<div class="create-participant-container">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">Create New Participant</h2>
+      <a routerLink="/participants" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="participantForm" (ngSubmit)="onSubmit()">
+        <div *ngIf="error" class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+
+        <div class="row">
+          <!-- First Name -->
+          <div class="col-md-6 mb-3">
+            <label for="firstName" class="form-label">First Name *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="firstName" 
+              formControlName="firstName" 
+              [ngClass]="{'is-invalid': participantForm.get('firstName')?.invalid && participantForm.get('firstName')?.touched}"
+            >
+            <div class="invalid-feedback" *ngIf="participantForm.get('firstName')?.invalid && participantForm.get('firstName')?.touched">
+              <span *ngIf="participantForm.get('firstName')?.errors?.['required']">First name is required.</span>
+              <span *ngIf="participantForm.get('firstName')?.errors?.['minlength']">First name must be at least 2 characters.</span>
+            </div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="col-md-6 mb-3">
+            <label for="lastName" class="form-label">Last Name *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="lastName" 
+              formControlName="lastName"
+              [ngClass]="{'is-invalid': participantForm.get('lastName')?.invalid && participantForm.get('lastName')?.touched}"
+            >
+            <div class="invalid-feedback" *ngIf="participantForm.get('lastName')?.invalid && participantForm.get('lastName')?.touched">
+              <span *ngIf="participantForm.get('lastName')?.errors?.['required']">Last name is required.</span>
+              <span *ngIf="participantForm.get('lastName')?.errors?.['minlength']">Last name must be at least 2 characters.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email *</label>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="email" 
+            formControlName="email"
+            [ngClass]="{'is-invalid': participantForm.get('email')?.invalid && participantForm.get('email')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="participantForm.get('email')?.invalid && participantForm.get('email')?.touched">
+            Please enter a valid email address.
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone Number *</label>
+          <input 
+            type="tel" 
+            class="form-control" 
+            id="phone" 
+            formControlName="phone"
+            [ngClass]="{'is-invalid': participantForm.get('phone')?.invalid && participantForm.get('phone')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="participantForm.get('phone')?.invalid && participantForm.get('phone')?.touched">
+            Please enter a valid phone number.
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3">
+          <label for="address" class="form-label">Address *</label>
+          <textarea 
+            class="form-control" 
+            id="address" 
+            rows="2" 
+            formControlName="address"
+            [ngClass]="{'is-invalid': participantForm.get('address')?.invalid && participantForm.get('address')?.touched}"
+          ></textarea>
+          <div class="invalid-feedback" *ngIf="participantForm.get('address')?.invalid && participantForm.get('address')?.touched">
+            Address is required.
+          </div>
+        </div>
+
+        <!-- Emergency Contact -->
+        <div class="mb-3">
+          <label for="emergencyContact" class="form-label">Emergency Contact *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="emergencyContact" 
+            formControlName="emergencyContact"
+            [ngClass]="{'is-invalid': participantForm.get('emergencyContact')?.invalid && participantForm.get('emergencyContact')?.touched}"
+          >
+          <div class="form-text">Format: Name: Phone Number</div>
+          <div class="invalid-feedback" *ngIf="participantForm.get('emergencyContact')?.invalid && participantForm.get('emergencyContact')?.touched">
+            Emergency contact is required.
+          </div>
+        </div>
+
+        <!-- Dietary Restrictions -->
+        <div class="mb-3">
+          <label for="dietaryRestrictions" class="form-label">Dietary Restrictions</label>
+          <textarea 
+            class="form-control" 
+            id="dietaryRestrictions" 
+            rows="2" 
+            formControlName="dietaryRestrictions"
+          ></textarea>
+          <div class="form-text">List any dietary restrictions or allergies.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid gap-2 mt-4">
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="loading"
+          >
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Create Participant
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

@@ -18,11 +18,13 @@ export const routes: Routes = [
   { path: 'events', component: EventListComponent },
   { path: 'events/create', component: EventCreateComponent },
   { path: 'events/:id', component: EventDetailsComponent },
+  { path: 'events/:id/edit', component: EventCreateComponent },
   
   // Activity routes
   { path: 'activities', component: ActivityListComponent },
   { path: 'activities/create', component: ActivityCreateComponent },
   { path: 'activities/:id', component: ActivityDetailsComponent },
+  { path: 'activities/:id/edit', component: ActivityCreateComponent },
   
   // Event Manager routes
   { path: 'managers', component: ManagerListComponent },
