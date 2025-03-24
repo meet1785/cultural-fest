@@ -1,0 +1,139 @@
+<div class="create-activity-container">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">Create New Activity</h2>
+      <a routerLink="/activities" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
+        <div *ngIf="error" class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+
+        <!-- Activity Name -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Activity Name *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="name" 
+            formControlName="name" 
+            [ngClass]="{'is-invalid': activityForm.get('name')?.invalid && activityForm.get('name')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="activityForm.get('name')?.invalid && activityForm.get('name')?.touched">
+            <span *ngIf="activityForm.get('name')?.errors?.['required']">Activity name is required.</span>
+            <span *ngIf="activityForm.get('name')?.errors?.['minlength']">Activity name must be at least 3 characters.</span>
+          </div>
+        </div>
+
+        <!-- Activity Description -->
+        <div class="mb-3">
+          <label for="description" class="form-label">Description *</label>
+          <textarea 
+            class="form-control" 
+            id="description" 
+            rows="3" 
+            formControlName="description"
+            [ngClass]="{'is-invalid': activityForm.get('description')?.invalid && activityForm.get('description')?.touched}"
+          ></textarea>
+          <div class="invalid-feedback" *ngIf="activityForm.get('description')?.invalid && activityForm.get('description')?.touched">
+            <span *ngIf="activityForm.get('description')?.errors?.['required']">Description is required.</span>
+            <span *ngIf="activityForm.get('description')?.errors?.['minlength']">Description must be at least 10 characters.</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Duration -->
+          <div class="col-md-6 mb-3">
+            <label for="duration" class="form-label">Duration (minutes) *</label>
+            <input 
+              type="number" 
+              class="form-control" 
+              id="duration" 
+              formControlName="duration"
+              [ngClass]="{'is-invalid': activityForm.get('duration')?.invalid && activityForm.get('duration')?.touched}"
+            >
+            <div class="invalid-feedback" *ngIf="activityForm.get('duration')?.invalid && activityForm.get('duration')?.touched">
+              <span *ngIf="activityForm.get('duration')?.errors?.['required']">Duration is required.</span>
+              <span *ngIf="activityForm.get('duration')?.errors?.['min']">Duration must be at least 1 minute.</span>
+            </div>
+          </div>
+
+          <!-- Capacity -->
+          <div class="col-md-6 mb-3">
+            <label for="capacity" class="form-label">Capacity *</label>
+            <input 
+              type="number" 
+              class="form-control" 
+              id="capacity" 
+              formControlName="capacity"
+              [ngClass]="{'is-invalid': activityForm.get('capacity')?.invalid && activityForm.get('capacity')?.touched}"
+            >
+            <div class="invalid-feedback" *ngIf="activityForm.get('capacity')?.invalid && activityForm.get('capacity')?.touched">
+              <span *ngIf="activityForm.get('capacity')?.errors?.['required']">Capacity is required.</span>
+              <span *ngIf="activityForm.get('capacity')?.errors?.['min']">Capacity must be at least 1.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3">
+          <label for="location" class="form-label">Location *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="location" 
+            formControlName="location"
+            [ngClass]="{'is-invalid': activityForm.get('location')?.invalid && activityForm.get('location')?.touched}"
+          >
+          <div class="invalid-feedback" *ngIf="activityForm.get('location')?.invalid && activityForm.get('location')?.touched">
+            Location is required.
+          </div>
+        </div>
+
+        <!-- Equipment Needed -->
+        <div class="mb-3">
+          <label for="equipmentNeeded" class="form-label">Equipment Needed</label>
+          <textarea 
+            class="form-control" 
+            id="equipmentNeeded" 
+            rows="2" 
+            formControlName="equipmentNeeded"
+          ></textarea>
+          <div class="form-text">List any equipment that participants need to bring or that will be provided.</div>
+        </div>
+
+        <!-- Event Association -->
+        <div class="mb-3">
+          <label for="eventId" class="form-label">Associated Event *</label>
+          <select 
+            class="form-select" 
+            id="eventId" 
+            formControlName="eventId"
+            [ngClass]="{'is-invalid': activityForm.get('eventId')?.invalid && activityForm.get('eventId')?.touched}"
+          >
+            <option value="" disabled>Select an event</option>
+            <option *ngFor="let event of events" [value]="event.id">
+              {{ event.name }} ({{ event.date | date:'mediumDate' }})
+            </option>
+          </select>
+          <div class="invalid-feedback" *ngIf="activityForm.get('eventId')?.invalid && activityForm.get('eventId')?.touched">
+            Please select an event for this activity.
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid gap-2 mt-4">
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="loading"
+          >
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Create Activity
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

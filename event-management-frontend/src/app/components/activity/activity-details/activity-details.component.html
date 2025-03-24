@@ -1,0 +1,75 @@
+<div class="activity-details-container">
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading activity details...</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && activity">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center bg-light">
+        <h3 class="mb-0">{{ activity.name }}</h3>
+        <div>
+          <a [routerLink]="['/activities']" class="btn btn-outline-secondary me-2">Back to Activities</a>
+          <a [routerLink]="['/activities', activity.id, 'edit']" class="btn btn-primary">Edit Activity</a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row mb-4">
+          <div class="col-md-8">
+            <h5 class="mb-3">Activity Details</h5>
+            <dl class="row">
+              <dt class="col-sm-4">Description:</dt>
+              <dd class="col-sm-8">{{ activity.description }}</dd>
+
+              <dt class="col-sm-4">Duration:</dt>
+              <dd class="col-sm-8">{{ activity.duration }} minutes</dd>
+
+              <dt class="col-sm-4">Location:</dt>
+              <dd class="col-sm-8">{{ activity.location }}</dd>
+
+              <dt class="col-sm-4">Capacity:</dt>
+              <dd class="col-sm-8">{{ activity.capacity }} participants</dd>
+
+              <dt class="col-sm-4">Equipment Needed:</dt>
+              <dd class="col-sm-8">{{ activity.equipmentNeeded || 'None' }}</dd>
+
+              <dt class="col-sm-4">Part of Event:</dt>
+              <dd class="col-sm-8" *ngIf="event">
+                <a [routerLink]="['/events', event.id]">{{ event.name }}</a>
+                <span class="badge bg-secondary ms-2">{{ event.date | date:'shortDate' }}</span>
+              </dd>
+              <dd class="col-sm-8" *ngIf="!event">Not associated with any event</dd>
+            </dl>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-info mb-3">
+              <div class="card-header bg-info text-white">Registration Status</div>
+              <div class="card-body">
+                <h5 class="card-title">Capacity Information</h5>
+                <!-- In a real app, you would show actual registration numbers here -->
+                <p class="card-text">Maximum capacity: {{ activity.capacity }}</p>
+                <p class="card-text">Currently registered: N/A</p>
+                <p class="card-text">Spots available: N/A</p>
+                <button class="btn btn-success w-100">Register Participants</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="event" class="alert alert-info">
+          <h5>Event Information</h5>
+          <p><strong>Event:</strong> {{ event.name }}</p>
+          <p><strong>Date:</strong> {{ event.date | date:'fullDate' }}</p>
+          <p><strong>Location:</strong> {{ event.location }}</p>
+          <a [routerLink]="['/events', event.id]" class="btn btn-outline-primary">View Full Event Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

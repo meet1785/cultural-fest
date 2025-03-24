@@ -1,0 +1,110 @@
+<div class="event-details-container">
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading event details...</p>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && event">
+    <!-- Event Info Section -->
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 class="mb-0">{{ event.name }}</h3>
+        <a routerLink="/events" class="btn btn-outline-secondary">Back to Events</a>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h5>Event Details</h5>
+            <p>{{ event.description }}</p>
+            <p><strong>Date:</strong> {{ event.date | date:'full' }}</p>
+            <p><strong>Location:</strong> {{ event.location }}</p>
+            <p><strong>Maximum Participants:</strong> {{ event.maxParticipants }}</p>
+            <p><strong>Current Participants:</strong> {{ participants.length }}</p>
+          </div>
+          <div class="col-md-6">
+            <div class="d-grid gap-2">
+              <a [routerLink]="['/events', event.id, 'edit']" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Edit Event
+              </a>
+              <a routerLink="/activities/create" [queryParams]="{eventId: event.id}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Add Activity
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activities Section -->
+        <div class="mt-4">
+          <h4>Activities</h4>
+          <div *ngIf="activities.length === 0" class="alert alert-info">
+            No activities have been scheduled for this event yet.
+          </div>
+          <div *ngIf="activities.length > 0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Duration</th>
+                  <th>Location</th>
+                  <th>Capacity</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let activity of activities">
+                  <td>{{ activity.name }}</td>
+                  <td>{{ activity.duration }} minutes</td>
+                  <td>{{ activity.location }}</td>
+                  <td>{{ activity.capacity }}</td>
+                  <td>
+                    <a [routerLink]="['/activities', activity.id]" class="btn btn-sm btn-info me-2">
+                      <i class="bi bi-eye"></i> View
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Participants Section -->
+        <div class="mt-4">
+          <h4>Participants</h4>
+          <div *ngIf="participants.length === 0" class="alert alert-info">
+            No participants have registered for this event yet.
+          </div>
+          <div *ngIf="participants.length > 0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let participant of participants">
+                  <td>{{ participant.firstName }} {{ participant.lastName }}</td>
+                  <td>{{ participant.email }}</td>
+                  <td>{{ participant.phone }}</td>
+                  <td>
+                    <a [routerLink]="['/participants', participant.id]" class="btn btn-sm btn-info">
+                      <i class="bi bi-eye"></i> View
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
