@@ -68,7 +68,8 @@
               "buildTarget": "event-management-frontend:build:production"
             },
             "development": {
-              "buildTarget": "event-management-frontend:build:development"
+              "buildTarget": "event-management-frontend:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
