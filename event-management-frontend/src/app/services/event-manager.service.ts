@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { EventManager } from '../models/event-manager.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventManagerService {
-  private apiUrl = 'api/managers';
+  private apiUrl = `${environment.apiUrl}/managers`;
   
   // Mock data for development
   private mockManagers: EventManager[] = [
@@ -37,45 +38,60 @@ export class EventManagerService {
 
   // Get all event managers
   getEventManagers(): Observable<EventManager[]> {
+    // For development with mock data
     return of(this.mockManagers);
-    // In production: return this.http.get<EventManager[]>(this.apiUrl);
+    
+    // In production: uncomment the line below
+    // return this.http.get<EventManager[]>(this.apiUrl);
   }
 
   // Get a specific event manager by ID
   getEventManager(id: number): Observable<EventManager> {
+    // For development with mock data
     const manager = this.mockManagers.find(m => m.id === id);
     return of(manager!);
-    // In production: return this.http.get<EventManager>(`${this.apiUrl}/${id}`);
+    
+    // In production: uncomment the line below
+    // return this.http.get<EventManager>(`${this.apiUrl}/${id}`);
   }
 
   // Create a new event manager
   createEventManager(manager: EventManager): Observable<EventManager> {
+    // For development with mock data
     const newId = Math.max(...this.mockManagers.map(m => m.id || 0)) + 1;
     const newManager = { ...manager, id: newId, managedEvents: [] };
     this.mockManagers.push(newManager);
     return of(newManager);
-    // In production: return this.http.post<EventManager>(this.apiUrl, manager);
+    
+    // In production: uncomment the line below
+    // return this.http.post<EventManager>(this.apiUrl, manager);
   }
 
   // Update an existing event manager
   updateEventManager(manager: EventManager): Observable<EventManager> {
+    // For development with mock data
     const index = this.mockManagers.findIndex(m => m.id === manager.id);
     if (index !== -1) {
       this.mockManagers[index] = { ...manager };
       return of(this.mockManagers[index]);
     }
     throw new Error('Event manager not found');
-    // In production: return this.http.put<EventManager>(`${this.apiUrl}/${manager.id}`, manager);
+    
+    // In production: uncomment the line below
+    // return this.http.put<EventManager>(`${this.apiUrl}/${manager.id}`, manager);
   }
 
   // Delete an event manager
   deleteEventManager(id: number): Observable<void> {
+    // For development with mock data
     const index = this.mockManagers.findIndex(m => m.id === id);
     if (index !== -1) {
       this.mockManagers.splice(index, 1);
       return of(undefined);
     }
     throw new Error('Event manager not found');
-    // In production: return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    
+    // In production: uncomment the line below
+    // return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
