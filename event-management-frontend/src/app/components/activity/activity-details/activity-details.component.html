@@ -16,7 +16,7 @@
         <h3 class="mb-0">{{ activity.name }}</h3>
         <div>
           <a [routerLink]="['/activities']" class="btn btn-outline-secondary me-2">Back to Activities</a>
-          <a [routerLink]="['/activities', activity.id, 'edit']" class="btn btn-primary">Edit Activity</a>
+          <a [routerLink]="['/activities', activity.activityId, 'edit']" class="btn btn-primary">Edit Activity</a>
         </div>
       </div>
       <div class="card-body">
@@ -27,21 +27,17 @@
               <dt class="col-sm-4">Description:</dt>
               <dd class="col-sm-8">{{ activity.description }}</dd>
 
-              <dt class="col-sm-4">Duration:</dt>
-              <dd class="col-sm-8">{{ activity.duration }} minutes</dd>
+              <!-- Removed duration property -->
 
-              <dt class="col-sm-4">Location:</dt>
-              <dd class="col-sm-8">{{ activity.location }}</dd>
+              <!-- Removed location property -->
 
-              <dt class="col-sm-4">Capacity:</dt>
-              <dd class="col-sm-8">{{ activity.capacity }} participants</dd>
+              <!-- Removed capacity property -->
 
-              <dt class="col-sm-4">Equipment Needed:</dt>
-              <dd class="col-sm-8">{{ activity.equipmentNeeded || 'None' }}</dd>
+              <!-- Removed equipmentNeeded property -->
 
               <dt class="col-sm-4">Part of Event:</dt>
               <dd class="col-sm-8" *ngIf="event">
-                <a [routerLink]="['/events', event.id]">{{ event.name }}</a>
+                <a [routerLink]="['/events', event.eventId]">{{ event.name }}</a>
                 <span class="badge bg-secondary ms-2">{{ event.date | date:'shortDate' }}</span>
               </dd>
               <dd class="col-sm-8" *ngIf="!event">Not associated with any event</dd>
@@ -51,23 +47,22 @@
             <div class="card border-info mb-3">
               <div class="card-header bg-info text-white">Registration Status</div>
               <div class="card-body">
-                <h5 class="card-title">Capacity Information</h5>
-                <!-- In a real app, you would show actual registration numbers here -->
-                <p class="card-text">Maximum capacity: {{ activity.capacity }}</p>
-                <p class="card-text">Currently registered: N/A</p>
-                <p class="card-text">Spots available: N/A</p>
+                <h5 class="card-title">Venue Information</h5>
+                <!-- Show venue information if available -->
+                <p class="card-text" *ngIf="activity.venueId">Venue ID: {{ activity.venueId }}</p>
+                <p class="card-text" *ngIf="!activity.venueId">No venue assigned</p>
                 <button class="btn btn-success w-100">Register Participants</button>
               </div>
             </div>
           </div>
         </div>
 
-        <div *ngIf="event" class="alert alert-info">
+        <div class="event-info" *ngIf="event">
           <h5>Event Information</h5>
           <p><strong>Event:</strong> {{ event.name }}</p>
           <p><strong>Date:</strong> {{ event.date | date:'fullDate' }}</p>
-          <p><strong>Location:</strong> {{ event.location }}</p>
-          <a [routerLink]="['/events', event.id]" class="btn btn-outline-primary">View Full Event Details</a>
+          <!-- Removed reference to event.location which doesn't exist in our schema -->
+          <a [routerLink]="['/events', event.eventId]" class="btn btn-outline-primary">View Full Event Details</a>
         </div>
       </div>
     </div>

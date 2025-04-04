@@ -23,7 +23,6 @@ export class ParticipantListComponent implements OnInit {
   }
 
   loadParticipants(): void {
-    this.loading = true;
     this.participantService.getParticipants().subscribe({
       next: (participants) => {
         this.participants = participants;
@@ -32,7 +31,7 @@ export class ParticipantListComponent implements OnInit {
       error: (err) => {
         this.error = 'Failed to load participants. Please try again later.';
         this.loading = false;
-        console.error('Error fetching participants:', err);
+        console.error('Error loading participants:', err);
       }
     });
   }
@@ -41,7 +40,7 @@ export class ParticipantListComponent implements OnInit {
     if (confirm('Are you sure you want to delete this participant? This action cannot be undone.')) {
       this.participantService.deleteParticipant(id).subscribe({
         next: () => {
-          this.participants = this.participants.filter(participant => participant.id !== id);
+          this.participants = this.participants.filter(participant => participant.participantId !== id);
         },
         error: (err) => {
           this.error = 'Failed to delete the participant. Please try again.';

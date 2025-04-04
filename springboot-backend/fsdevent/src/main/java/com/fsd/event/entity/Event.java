@@ -14,28 +14,25 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"activities", "participants"})
-@EqualsAndHashCode(exclude = {"activities", "participants"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@ToString(exclude = {"activities", "manager"})
+@EqualsAndHashCode(exclude = {"activities", "manager"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "eventId")
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "event_id")
+    private Long eventId;
     
     @Column(nullable = false)
     private String name;
     
-    @Column(length = 1000)
-    private String description;
-    
+    @Column(nullable = false)
     private LocalDate date;
-    private String location;
-    private int maxParticipants;
-    private Long organizerId;
+    
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    private EventManager manager;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Activity> activities = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "events")
-    private List<Participant> participants = new ArrayList<>();
 }

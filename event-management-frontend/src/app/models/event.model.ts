@@ -1,11 +1,7 @@
 export interface Event {
-  id?: number;
+  eventId?: number;
   name: string;
-  description: string;
   date: Date;
-  location: string;
-  maxParticipants: number;
-  organizerId?: number;
-  activities?: number[];
-  participants?: number[];
+  managerId?: number;
+  id?: number; // Alias for eventId
 }

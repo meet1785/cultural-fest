@@ -26,87 +26,35 @@
           </div>
         </div>
 
-        <!-- Event Description -->
+        <!-- Event Date -->
         <div class="mb-3">
-          <label for="description" class="form-label">Description *</label>
-          <textarea 
-            class="form-control" 
-            id="description" 
-            rows="4" 
-            formControlName="description"
-            [ngClass]="{'is-invalid': eventForm.get('description')?.invalid && eventForm.get('description')?.touched}"
-          ></textarea>
-          <div class="invalid-feedback" *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched">
-            <span *ngIf="eventForm.get('description')?.errors?.['required']">Description is required.</span>
-            <span *ngIf="eventForm.get('description')?.errors?.['minlength']">Description must be at least 10 characters.</span>
-          </div>
-        </div>
-
-        <div class="row">
-          <!-- Event Date -->
-          <div class="col-md-6 mb-3">
-            <label for="date" class="form-label">Date *</label>
-            <input 
-              type="date" 
-              class="form-control" 
-              id="date" 
-              formControlName="date"
-              [ngClass]="{'is-invalid': eventForm.get('date')?.invalid && eventForm.get('date')?.touched}"
-            >
-            <div class="invalid-feedback" *ngIf="eventForm.get('date')?.invalid && eventForm.get('date')?.touched">
-              Event date is required.
-            </div>
-          </div>
-
-          <!-- Max Participants -->
-          <div class="col-md-6 mb-3">
-            <label for="maxParticipants" class="form-label">Maximum Participants *</label>
-            <input 
-              type="number" 
-              class="form-control" 
-              id="maxParticipants" 
-              formControlName="maxParticipants"
-              [ngClass]="{'is-invalid': eventForm.get('maxParticipants')?.invalid && eventForm.get('maxParticipants')?.touched}"
-            >
-            <div class="invalid-feedback" *ngIf="eventForm.get('maxParticipants')?.invalid && eventForm.get('maxParticipants')?.touched">
-              <span *ngIf="eventForm.get('maxParticipants')?.errors?.['required']">Maximum participants is required.</span>
-              <span *ngIf="eventForm.get('maxParticipants')?.errors?.['min']">Maximum participants must be at least 1.</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Location -->
-        <div class="mb-3">
-          <label for="location" class="form-label">Location *</label>
+          <label for="date" class="form-label">Date *</label>
           <input 
-            type="text" 
+            type="date" 
             class="form-control" 
-            id="location" 
-            formControlName="location"
-            [ngClass]="{'is-invalid': eventForm.get('location')?.invalid && eventForm.get('location')?.touched}"
+            id="date" 
+            formControlName="date"
+            [ngClass]="{'is-invalid': eventForm.get('date')?.invalid && eventForm.get('date')?.touched}"
           >
-          <div class="invalid-feedback" *ngIf="eventForm.get('location')?.invalid && eventForm.get('location')?.touched">
-            Location is required.
+          <div class="invalid-feedback" *ngIf="eventForm.get('date')?.invalid && eventForm.get('date')?.touched">
+            Event date is required.
           </div>
         </div>
 
-        <!-- Event Organizer -->
+        <!-- Event Manager -->
         <div class="mb-3">
-          <label for="organizerId" class="form-label">Event Organizer *</label>
+          <label for="managerId" class="form-label">Event Manager</label>
           <select 
             class="form-select" 
-            id="organizerId" 
-            formControlName="organizerId"
-            [ngClass]="{'is-invalid': eventForm.get('organizerId')?.invalid && eventForm.get('organizerId')?.touched}"
+            id="managerId" 
+            formControlName="managerId"
+            [ngClass]="{'is-invalid': eventForm.get('managerId')?.invalid && eventForm.get('managerId')?.touched}"
           >
-            <option value="" disabled>Select an organizer</option>
-            <option *ngFor="let manager of eventManagers" [value]="manager.id">
-              {{ manager.firstName }} {{ manager.lastName }} ({{ manager.organization }})
+            <option value="" disabled>Select a manager</option>
+            <option *ngFor="let manager of eventManagers" [value]="manager.managerId">
+              {{ manager.name }}
             </option>
           </select>
-          <div class="invalid-feedback" *ngIf="eventForm.get('organizerId')?.invalid && eventForm.get('organizerId')?.touched">
-            Event organizer is required.
-          </div>
           <div class="form-text">
             <a routerLink="/managers/create" target="_blank">Create a new event manager</a> if not in list.
           </div>

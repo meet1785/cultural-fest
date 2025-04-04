@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ParticipantService } from '../../../services/participant.service';
-import { EventService } from '../../../services/event.service';
 import { Participant } from '../../../models/participant.model';
-import { Event } from '../../../models/event.model';
+import { Activity } from '../../../models/activity.model';
 
 @Component({
   selector: 'app-participant-details',
@@ -17,8 +16,7 @@ import { Event } from '../../../models/event.model';
 export class ParticipantDetailsComponent implements OnInit {
   participantId!: number;
   participant: Participant | null = null;
-  registeredEvents: Event[] = [];
-  availableEvents: Event[] = [];
+  activities: Activity[] = [];
   loading = true;
   error: string | null = null;
   editMode = false;
@@ -27,18 +25,13 @@ export class ParticipantDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private participantService: ParticipantService,
-    private eventService: EventService
+    private participantService: ParticipantService
   ) {
     this.participantForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?[\d\s-]{10,}$/)]],
-      address: ['', Validators.required],
-      emergencyContact: ['', Validators.required],
-      dietaryRestrictions: [''],
-      eventsRegistered: [[]]
+      collegeName: ['']
     });
   }
 
@@ -53,7 +46,7 @@ export class ParticipantDetailsComponent implements OnInit {
       next: (participant) => {
         this.participant = participant;
         this.participantForm.patchValue(participant);
-        this.loadEvents();
+        this.loadActivities();
       },
       error: (err) => {
         this.error = 'Failed to load participant details. Please try again later.';
@@ -63,58 +56,36 @@ export class ParticipantDetailsComponent implements OnInit {
     });
   }
 
-  loadEvents(): void {
-    this.eventService.getEvents().subscribe({
-      next: (events) => {
-        this.registeredEvents = events.filter(event => 
-          this.participant?.eventsRegistered?.includes(event.id!)
-        );
-        this.availableEvents = events.filter(event => 
-          !this.participant?.eventsRegistered?.includes(event.id!)
-        );
+  loadActivities(): void {
+    if (!this.participant) return;
+    
+    // Get activities this participant is registered for
+    this.participantService.getActivitiesByParticipant(this.participant.participantId!).subscribe({
+      next: (activities) => {
+        this.activities = activities;
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Error loading events:', err);
+      error: (err: any) => {
+        console.error('Error loading activities:', err);
         this.loading = false;
       }
     });
   }
 
-  registerForEvent(eventId: number): void {
+  registerForActivity(activityId: number): void {
     if (!this.participant) return;
     
     this.loading = true;
-    this.participantService.registerForEvent(this.participant.id!, eventId).subscribe({
-      next: (updatedParticipant) => {
-        this.participant = updatedParticipant;
-        this.loadEvents();
+    this.participantService.registerForActivity(this.participant.participantId!, activityId).subscribe({
+      next: () => {
+        this.loadActivities(); // Reload the activities after registration
       },
-      error: (err) => {
-        this.error = 'Failed to register for event. Please try again.';
+      error: (err: any) => {
+        this.error = 'Failed to register for activity. Please try again.';
         this.loading = false;
-        console.error('Error registering for event:', err);
+        console.error('Error registering for activity:', err);
       }
     });
-  }
-
-  unregisterFromEvent(eventId: number): void {
-    if (!this.participant) return;
-    
-    if (confirm('Are you sure you want to unregister from this event?')) {
-      this.loading = true;
-      this.participantService.unregisterFromEvent(this.participant.id!, eventId).subscribe({
-        next: (updatedParticipant) => {
-          this.participant = updatedParticipant;
-          this.loadEvents();
-        },
-        error: (err) => {
-          this.error = 'Failed to unregister from event. Please try again.';
-          this.loading = false;
-          console.error('Error unregistering from event:', err);
-        }
-      });
-    }
   }
 
   onSubmit(): void {
@@ -125,8 +96,7 @@ export class ParticipantDetailsComponent implements OnInit {
     this.loading = true;
     const updatedParticipant = {
       ...this.participantForm.value,
-      id: this.participant?.id,
-      eventsRegistered: this.participant?.eventsRegistered
+      participantId: this.participant?.participantId
     };
 
     this.participantService.updateParticipant(updatedParticipant).subscribe({

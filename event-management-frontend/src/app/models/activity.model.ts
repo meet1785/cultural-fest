@@ -1,10 +1,8 @@
 export interface Activity {
-  id?: number;
+  activityId?: number;
   name: string;
-  description: string;
-  duration: number; // in minutes
-  capacity: number;
-  equipmentNeeded: string;
-  location: string;
+  description?: string;
   eventId?: number;
+  venueId?: number;
+  id?: number; // Alias for activityId
 }

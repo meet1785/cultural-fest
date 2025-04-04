@@ -1,10 +1,7 @@
 export interface EventManager {
-  id?: number;
-  firstName: string;
-  lastName: string;
+  managerId?: number;
+  name: string;
   email: string;
-  phone: string;
-  organization: string;
-  role: string;
-  managedEvents?: number[];
+  phone?: string;
+  id?: number; // Alias for managerId
 }

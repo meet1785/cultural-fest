@@ -17,9 +17,14 @@ export class ActivityService {
     return this.http.get<Activity[]>(this.apiUrl);
   }
 
-  // Get activities for a specific event
-  getActivitiesByEventId(eventId: number): Observable<Activity[]> {
-    return this.http.get<Activity[]>(`${this.apiUrl}/event/${eventId}`);
+  // Get activities by event
+  getActivitiesByEvent(eventId: number): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${environment.apiUrl}/events/${eventId}/activities`);
+  }
+
+  // Get activities by venue
+  getActivitiesByVenue(venueId: number): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${environment.apiUrl}/venues/${venueId}/activities`);
   }
 
   // Get a specific activity by ID
@@ -29,12 +34,12 @@ export class ActivityService {
 
   // Create a new activity
   createActivity(activity: Activity): Observable<Activity> {
-    return this.http.post<Activity>(`${this.apiUrl}/event/${activity.eventId}`, activity);
+    return this.http.post<Activity>(this.apiUrl, activity);
   }
 
   // Update an existing activity
   updateActivity(activity: Activity): Observable<Activity> {
-    return this.http.put<Activity>(`${this.apiUrl}/${activity.id}`, activity);
+    return this.http.put<Activity>(`${this.apiUrl}/${activity.activityId}`, activity);
   }
 
   // Delete an activity
@@ -42,8 +47,13 @@ export class ActivityService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Get participants for an activity
-  getParticipantsForActivity(id: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${id}/participants`);
+  // Register a participant for an activity
+  registerParticipant(activityId: number, participantId: number): Observable<Activity> {
+    return this.http.post<Activity>(`${this.apiUrl}/${activityId}/register/${participantId}`, {});
+  }
+
+  // Get activities by event ID
+  getActivitiesByEventId(eventId: number): Observable<Activity[]> {
+    return this.getActivitiesByEvent(eventId);
   }
 }

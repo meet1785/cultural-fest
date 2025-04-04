@@ -3,10 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { EventService } from '../../../services/event.service';
 import { ActivityService } from '../../../services/activity.service';
-import { ParticipantService } from '../../../services/participant.service';
 import { Event } from '../../../models/event.model';
 import { Activity } from '../../../models/activity.model';
-import { Participant } from '../../../models/participant.model';
 
 @Component({
   selector: 'app-event-details',
@@ -19,15 +17,13 @@ export class EventDetailsComponent implements OnInit {
   eventId!: number;
   event: Event | null = null;
   activities: Activity[] = [];
-  participants: Participant[] = [];
   loading = true;
   error: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
-    private activityService: ActivityService,
-    private participantService: ParticipantService
+    private activityService: ActivityService
   ) { }
 
   ngOnInit(): void {
@@ -41,7 +37,6 @@ export class EventDetailsComponent implements OnInit {
       next: (event) => {
         this.event = event;
         this.loadActivities();
-        this.loadParticipants();
       },
       error: (err) => {
         this.error = 'Failed to load event details. Please try again later.';
@@ -53,23 +48,12 @@ export class EventDetailsComponent implements OnInit {
 
   loadActivities(): void {
     this.activityService.getActivitiesByEventId(this.eventId).subscribe({
-      next: (activities) => {
+      next: (activities: Activity[]) => {
         this.activities = activities;
-      },
-      error: (err) => {
-        console.error('Error fetching activities:', err);
-      }
-    });
-  }
-
-  loadParticipants(): void {
-    this.participantService.getParticipantsByEventId(this.eventId).subscribe({
-      next: (participants) => {
-        this.participants = participants;
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Error fetching participants:', err);
+      error: (err: any) => {
+        console.error('Error fetching activities:', err);
         this.loading = false;
       }
     });

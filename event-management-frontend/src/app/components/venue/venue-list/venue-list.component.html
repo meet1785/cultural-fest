@@ -1,0 +1,42 @@
+<div class="container mt-4">
+  <h2>Venues</h2>
+  
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-primary" (click)="goToCreate()">Add New Venue</button>
+  </div>
+  
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  
+  <div *ngIf="!loading && venues.length === 0" class="alert alert-info">
+    No venues found. Click "Add New Venue" to create one.
+  </div>
+  
+  <div class="row row-cols-1 row-cols-md-3 g-4" *ngIf="!loading && venues.length > 0">
+    <div class="col" *ngFor="let venue of venues">
+      <div class="card h-100" (click)="goToDetails(venue.venueId!)">
+        <div class="card-body">
+          <h5 class="card-title">{{ venue.name }}</h5>
+          <p class="card-text" *ngIf="venue.location">
+            <strong>Location:</strong> {{ venue.location }}
+          </p>
+          <p class="card-text" *ngIf="venue.capacity">
+            <strong>Capacity:</strong> {{ venue.capacity }}
+          </p>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+          <button class="btn btn-sm btn-danger" (click)="deleteVenue(venue.venueId!, $event)">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

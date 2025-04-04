@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h2>Create New Venue</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+      
+      <form (ngSubmit)="saveVenue()">
+        <div class="mb-3">
+          <label for="venueName" class="form-label">Name *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="venueName" 
+            name="venueName"
+            [(ngModel)]="venue.name" 
+            required>
+          <div class="form-text">Enter the venue name</div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="venueLocation" class="form-label">Location</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="venueLocation" 
+            name="venueLocation"
+            [(ngModel)]="venue.location">
+          <div class="form-text">Enter the venue location</div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="venueCapacity" class="form-label">Capacity</label>
+          <input 
+            type="number" 
+            class="form-control" 
+            id="venueCapacity" 
+            name="venueCapacity"
+            [(ngModel)]="venue.capacity">
+          <div class="form-text">Enter the venue capacity (number of people)</div>
+        </div>
+        
+        <div class="d-flex justify-content-end mt-4">
+          <button type="button" class="btn btn-secondary me-2" (click)="cancel()">Cancel</button>
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            Save Venue
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

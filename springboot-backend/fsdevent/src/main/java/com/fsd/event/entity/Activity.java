@@ -14,33 +14,33 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"event", "participants"})
-@EqualsAndHashCode(exclude = {"event", "participants"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@ToString(exclude = {"event", "venue", "participants"})
+@EqualsAndHashCode(exclude = {"event", "venue", "participants"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "activityId")
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "activity_id")
+    private Long activityId;
 
     @Column(nullable = false)
     private String name;
-    
-    @Column(length = 1000)
+
     private String description;
-    
-    private int duration;
-    private int capacity;
-    private String equipmentNeeded;
-    private String location;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "activities"})
     private Event event;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venue_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "activities"})
+    private Venue venue;
+
     @ManyToMany
     @JoinTable(
-        name = "activity_participant",
+        name = "participant_activity",
         joinColumns = @JoinColumn(name = "activity_id"),
         inverseJoinColumns = @JoinColumn(name = "participant_id")
     )

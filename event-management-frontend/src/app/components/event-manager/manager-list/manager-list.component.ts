@@ -12,7 +12,8 @@ import { EventManager } from '../../../models/event-manager.model';
   styleUrl: './manager-list.component.css'
 })
 export class ManagerListComponent implements OnInit {
-  managers: EventManager[] = [];
+  // Fix: Rename 'managers' to 'eventManagers' to match template
+  eventManagers: EventManager[] = [];
   loading = true;
   error: string | null = null;
 
@@ -26,7 +27,8 @@ export class ManagerListComponent implements OnInit {
     this.loading = true;
     this.managerService.getEventManagers().subscribe({
       next: (managers) => {
-        this.managers = managers;
+        // Fix: Assign to eventManagers property
+        this.eventManagers = managers;
         this.loading = false;
       },
       error: (err) => {
@@ -41,7 +43,8 @@ export class ManagerListComponent implements OnInit {
     if (confirm('Are you sure you want to delete this event manager?')) {
       this.managerService.deleteEventManager(id).subscribe({
         next: () => {
-          this.managers = this.managers.filter(manager => manager.id !== id);
+          // Fix: Filter from eventManagers
+          this.eventManagers = this.eventManagers.filter(manager => manager.managerId !== id);
         },
         error: (err) => {
           this.error = 'Failed to delete the event manager. Please try again.';

@@ -10,6 +10,9 @@ import { ManagerCreateComponent } from './components/event-manager/manager-creat
 import { ParticipantListComponent } from './components/participant/participant-list/participant-list.component';
 import { ParticipantDetailsComponent } from './components/participant/participant-details/participant-details.component';
 import { ParticipantCreateComponent } from './components/participant/participant-create/participant-create.component';
+import { VenueListComponent } from './components/venue/venue-list/venue-list.component';
+import { VenueDetailsComponent } from './components/venue/venue-details/venue-details.component';
+import { VenueCreateComponent } from './components/venue/venue-create/venue-create.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/events', pathMatch: 'full' },
@@ -34,6 +37,11 @@ export const routes: Routes = [
   { path: 'participants', component: ParticipantListComponent },
   { path: 'participants/create', component: ParticipantCreateComponent },
   { path: 'participants/:id', component: ParticipantDetailsComponent },
+  
+  // Venue routes
+  { path: 'venues', component: VenueListComponent },
+  { path: 'venues/create', component: VenueCreateComponent },
+  { path: 'venues/:id', component: VenueDetailsComponent },
   
   // Fallback route
   { path: '**', redirectTo: '/events' }

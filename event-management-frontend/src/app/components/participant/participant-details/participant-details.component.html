@@ -12,7 +12,7 @@
 
   <div *ngIf="!loading && participant" class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-      <h3 class="mb-0">{{ participant.firstName }} {{ participant.lastName }}</h3>
+      <h3 class="mb-0">{{ participant.name }}</h3>
       <div>
         <a routerLink="/participants" class="btn btn-outline-secondary me-2">Back to List</a>
         <button (click)="editMode = !editMode" class="btn" [ngClass]="editMode ? 'btn-warning' : 'btn-primary'">
@@ -35,79 +35,35 @@
               <dt class="col-sm-4">Phone:</dt>
               <dd class="col-sm-8">{{ participant.phone }}</dd>
 
-              <dt class="col-sm-4">Address:</dt>
-              <dd class="col-sm-8">{{ participant.address }}</dd>
-            </dl>
-          </div>
-          <div class="col-md-6">
-            <h5>Emergency & Medical Information</h5>
-            <dl class="row">
-              <dt class="col-sm-4">Emergency Contact:</dt>
-              <dd class="col-sm-8">{{ participant.emergencyContact }}</dd>
-
-              <dt class="col-sm-4">Dietary Restrictions:</dt>
-              <dd class="col-sm-8">{{ participant.dietaryRestrictions || 'None' }}</dd>
+              <dt class="col-sm-4">College:</dt>
+              <dd class="col-sm-8">{{ participant.collegeName || 'N/A' }}</dd>
             </dl>
           </div>
         </div>
 
-        <!-- Registered Events Section -->
+        <!-- Activities Section -->
         <div class="mt-4">
-          <h5>Registered Events</h5>
-          <div *ngIf="!registeredEvents?.length" class="alert alert-info">
-            Not registered for any events yet.
+          <h5>Registered Activities</h5>
+          <div *ngIf="activities.length === 0" class="alert alert-info">
+            Not registered for any activities yet.
           </div>
-          <div *ngIf="registeredEvents?.length" class="table-responsive">
+          <div *ngIf="activities.length > 0" class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>Event Name</th>
-                  <th>Date</th>
-                  <th>Location</th>
+                  <th>Activity Name</th>
+                  <th>Description</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let event of registeredEvents">
-                  <td>{{ event.name }}</td>
-                  <td>{{ event.date | date:'mediumDate' }}</td>
-                  <td>{{ event.location }}</td>
+                <tr *ngFor="let activity of activities">
+                  <td>{{ activity.name }}</td>
+                  <td>{{ activity.description }}</td>
                   <td>
-                    <button (click)="unregisterFromEvent(event.id!)" class="btn btn-sm btn-danger">
-                      <i class="bi bi-x-circle"></i> Unregister
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Available Events Section -->
-        <div class="mt-4">
-          <h5>Available Events</h5>
-          <div *ngIf="!availableEvents?.length" class="alert alert-info">
-            No available events to register for.
-          </div>
-          <div *ngIf="availableEvents?.length" class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Event Name</th>
-                  <th>Date</th>
-                  <th>Location</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let event of availableEvents">
-                  <td>{{ event.name }}</td>
-                  <td>{{ event.date | date:'mediumDate' }}</td>
-                  <td>{{ event.location }}</td>
-                  <td>
-                    <button (click)="registerForEvent(event.id!)" class="btn btn-sm btn-success">
-                      <i class="bi bi-plus-circle"></i> Register
-                    </button>
+                    <a [routerLink]="['/activities', activity.activityId]" class="btn btn-sm btn-info">
+                      <i class="bi bi-eye"></i> View
+                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -119,23 +75,12 @@
       <!-- Edit Mode -->
       <div *ngIf="editMode">
         <form [formGroup]="participantForm" (ngSubmit)="onSubmit()">
-          <div class="row">
-            <!-- First Name -->
-            <div class="col-md-6 mb-3">
-              <label for="firstName" class="form-label">First Name *</label>
-              <input type="text" class="form-control" id="firstName" formControlName="firstName">
-              <div class="invalid-feedback" *ngIf="participantForm.get('firstName')?.invalid && participantForm.get('firstName')?.touched">
-                First name is required
-              </div>
-            </div>
-
-            <!-- Last Name -->
-            <div class="col-md-6 mb-3">
-              <label for="lastName" class="form-label">Last Name *</label>
-              <input type="text" class="form-control" id="lastName" formControlName="lastName">
-              <div class="invalid-feedback" *ngIf="participantForm.get('lastName')?.invalid && participantForm.get('lastName')?.touched">
-                Last name is required
-              </div>
+          <!-- Name -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Full Name *</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+            <div class="invalid-feedback" *ngIf="participantForm.get('name')?.invalid && participantForm.get('name')?.touched">
+              Name is required
             </div>
           </div>
 
@@ -157,29 +102,10 @@
             </div>
           </div>
 
-          <!-- Address -->
+          <!-- College Name -->
           <div class="mb-3">
-            <label for="address" class="form-label">Address *</label>
-            <textarea class="form-control" id="address" rows="2" formControlName="address"></textarea>
-            <div class="invalid-feedback" *ngIf="participantForm.get('address')?.invalid && participantForm.get('address')?.touched">
-              Address is required
-            </div>
-          </div>
-
-          <!-- Emergency Contact -->
-          <div class="mb-3">
-            <label for="emergencyContact" class="form-label">Emergency Contact *</label>
-            <input type="text" class="form-control" id="emergencyContact" formControlName="emergencyContact">
-            <div class="form-text">Format: Name: Phone Number</div>
-            <div class="invalid-feedback" *ngIf="participantForm.get('emergencyContact')?.invalid && participantForm.get('emergencyContact')?.touched">
-              Emergency contact is required
-            </div>
-          </div>
-
-          <!-- Dietary Restrictions -->
-          <div class="mb-3">
-            <label for="dietaryRestrictions" class="form-label">Dietary Restrictions</label>
-            <textarea class="form-control" id="dietaryRestrictions" rows="2" formControlName="dietaryRestrictions"></textarea>
+            <label for="collegeName" class="form-label">College</label>
+            <input type="text" class="form-control" id="collegeName" formControlName="collegeName">
           </div>
 
           <!-- Submit Button -->

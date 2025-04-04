@@ -14,39 +14,27 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"activities", "events"})
-@EqualsAndHashCode(exclude = {"activities", "events"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@ToString(exclude = {"activities"})
+@EqualsAndHashCode(exclude = {"activities"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "participantId")
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private String firstName;
+    @Column(name = "participant_id")
+    private Long participantId;
     
     @Column(nullable = false)
-    private String lastName;
+    private String name;
     
     @Column(nullable = false, unique = true)
     private String email;
     
-    @Column(nullable = false)
     private String phone;
     
-    private String address;
-    private String emergencyContact;
-    private String dietaryRestrictions;
-
+    @Column(name = "college_name")
+    private String collegeName;
+    
     @ManyToMany(mappedBy = "participants")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "participants"})
     private List<Activity> activities = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-        name = "event_participant",
-        joinColumns = @JoinColumn(name = "participant_id"),
-        inverseJoinColumns = @JoinColumn(name = "event_id")
-    )
-    private List<Event> events = new ArrayList<>();
 }

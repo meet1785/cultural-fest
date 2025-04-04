@@ -9,25 +9,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "event_manager")
+@Table(name = "venue")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "managerId")
-public class EventManager {
+@ToString(exclude = {"activities"})
+@EqualsAndHashCode(exclude = {"activities"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "venueId")
+public class Venue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "manager_id")
-    private Long managerId;
+    @Column(name = "venue_id")
+    private Long venueId;
     
     @Column(nullable = false)
     private String name;
     
-    @Column(nullable = false, unique = true)
-    private String email;
+    private String location;
     
-    private String phone;
+    private Integer capacity;
     
-    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
-    private List<Event> events = new ArrayList<>();
+    @OneToMany(mappedBy = "venue")
+    private List<Activity> activities = new ArrayList<>();
 }

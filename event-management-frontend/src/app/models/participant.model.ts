@@ -1,12 +1,8 @@
 export interface Participant {
-  id?: number;
-  firstName: string;
-  lastName: string;
+  participantId?: number;
+  name: string;
   email: string;
-  phone: string;
-  address: string;
-  emergencyContact: string;
-  dietaryRestrictions?: string;
-  eventsRegistered?: number[];
-  activitiesRegistered?: number[];
+  phone?: string;
+  collegeName?: string;
+  id?: number; // Alias for participantId
 }

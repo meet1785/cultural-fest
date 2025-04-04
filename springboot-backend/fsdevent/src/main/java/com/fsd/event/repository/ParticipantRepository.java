@@ -7,5 +7,7 @@ import java.util.Optional;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
     Optional<Participant> findByEmail(String email);
-    List<Participant> findByEventsId(Long eventId);
+    
+    // Updated to get participants by activity ID
+    List<Participant> findByActivitiesActivityId(Long activityId);
 }
