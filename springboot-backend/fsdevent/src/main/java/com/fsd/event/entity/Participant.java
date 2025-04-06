@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "participant")
@@ -24,17 +24,26 @@ public class Participant {
     private Long participantId;
     
     @Column(nullable = false)
-    private String name;
+    private String firstName;
+    
+    @Column(nullable = false)
+    private String lastName;
     
     @Column(nullable = false, unique = true)
     private String email;
     
     private String phone;
     
-    @Column(name = "college_name")
-    private String collegeName;
+    private String address;
+    
+    private String emergencyContact;
+    
+    private String dietaryRestrictions;
+    
+    @ManyToMany
+    private Set<Event> events = new HashSet<>();
     
     @ManyToMany(mappedBy = "participants")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "participants"})
-    private List<Activity> activities = new ArrayList<>();
+    private Set<Activity> activities = new HashSet<>();
 }

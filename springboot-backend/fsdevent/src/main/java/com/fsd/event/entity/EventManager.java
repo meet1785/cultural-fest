@@ -21,12 +21,19 @@ public class EventManager {
     private Long managerId;
     
     @Column(nullable = false)
-    private String name;
+    private String firstName;
+    
+    @Column(nullable = false)
+    private String lastName;
     
     @Column(nullable = false, unique = true)
     private String email;
     
     private String phone;
+    
+    private String organization;
+    
+    private String role;
     
     @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
     private List<Event> events = new ArrayList<>();

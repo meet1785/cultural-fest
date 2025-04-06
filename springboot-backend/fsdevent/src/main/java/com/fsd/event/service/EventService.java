@@ -33,7 +33,7 @@ public class EventService {
         Event event = getEventById(id);
         event.setName(eventDetails.getName());
         event.setDescription(eventDetails.getDescription());
-        event.setDate(eventDetails.getDate());
+        event.setEventDateTime(eventDetails.getEventDateTime());  // Changed from getDate
         event.setLocation(eventDetails.getLocation());
         event.setMaxParticipants(eventDetails.getMaxParticipants());
         event.setOrganizerId(eventDetails.getOrganizerId());

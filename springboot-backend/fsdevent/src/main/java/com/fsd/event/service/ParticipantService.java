@@ -26,7 +26,7 @@ public class ParticipantService {
     }
 
     public List<Participant> getParticipantsByEventId(Long eventId) {
-        return participantRepository.findByEventsId(eventId);
+        return participantRepository.findByEventsEventId(eventId);  // Changed from findByEventsId
     }
 
     public Participant createParticipant(Participant participant) {

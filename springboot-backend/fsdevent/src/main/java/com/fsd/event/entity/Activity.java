@@ -28,6 +28,11 @@ public class Activity {
 
     private String description;
 
+    private Integer duration;
+    private Integer capacity;
+    private String equipmentNeeded;
+    private String location;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "activities"})
