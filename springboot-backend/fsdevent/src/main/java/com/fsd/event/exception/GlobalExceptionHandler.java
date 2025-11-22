@@ -3,6 +3,7 @@ package com.fsd.event.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,7 +31,19 @@ public class GlobalExceptionHandler {
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("error", "Validation Failed");
         
+        Map<String, String> errors = extractValidationErrors(ex);
+        body.put("validationErrors", errors);
+        
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Extracts validation errors from MethodArgumentNotValidException.
+     * Handles both field-specific errors and global errors.
+     */
+    private Map<String, String> extractValidationErrors(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
+        
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             if (error instanceof FieldError) {
                 String fieldName = ((FieldError) error).getField();
@@ -43,8 +56,7 @@ public class GlobalExceptionHandler {
             }
         });
         
-        body.put("validationErrors", errors);
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return errors;
     }
 
     /**
