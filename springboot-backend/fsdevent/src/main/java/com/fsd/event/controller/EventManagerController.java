@@ -2,6 +2,7 @@ package com.fsd.event.controller;
 
 import com.fsd.event.entity.EventManager;
 import com.fsd.event.service.EventManagerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,12 @@ public class EventManagerController {
     }
 
     @PostMapping
-    public EventManager createEventManager(@RequestBody EventManager manager) {
+    public EventManager createEventManager(@Valid @RequestBody EventManager manager) {
         return eventManagerService.createEventManager(manager);
     }
 
     @PutMapping("/{id}")
-    public EventManager updateEventManager(@PathVariable Long id, @RequestBody EventManager manager) {
+    public EventManager updateEventManager(@PathVariable Long id, @Valid @RequestBody EventManager manager) {
         return eventManagerService.updateEventManager(id, manager);
     }
 

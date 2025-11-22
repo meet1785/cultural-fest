@@ -2,6 +2,7 @@ package com.fsd.event.controller;
 
 import com.fsd.event.entity.Participant;
 import com.fsd.event.service.ParticipantService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,12 @@ public class ParticipantController {
     }
 
     @PostMapping
-    public Participant createParticipant(@RequestBody Participant participant) {
+    public Participant createParticipant(@Valid @RequestBody Participant participant) {
         return participantService.createParticipant(participant);
     }
 
     @PutMapping("/{id}")
-    public Participant updateParticipant(@PathVariable Long id, @RequestBody Participant participant) {
+    public Participant updateParticipant(@PathVariable Long id, @Valid @RequestBody Participant participant) {
         return participantService.updateParticipant(id, participant);
     }
 

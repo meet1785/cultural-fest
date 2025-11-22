@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -23,14 +24,24 @@ public class Activity {
     @Column(name = "activity_id")
     private Long activityId;
 
+    @NotBlank(message = "Activity name is required")
+    @Size(min = 3, max = 100, message = "Activity name must be between 3 and 100 characters")
     @Column(nullable = false)
     private String name;
 
+    @Size(max = 500, message = "Description must not exceed 500 characters")
     private String description;
 
+    @Positive(message = "Duration must be a positive number (in minutes)")
     private Integer duration;
+    
+    @Positive(message = "Capacity must be a positive number")
     private Integer capacity;
+    
+    @Size(max = 200, message = "Equipment needed must not exceed 200 characters")
     private String equipmentNeeded;
+    
+    @Size(max = 200, message = "Location must not exceed 200 characters")
     private String location;
 
     @ManyToOne(fetch = FetchType.LAZY)
