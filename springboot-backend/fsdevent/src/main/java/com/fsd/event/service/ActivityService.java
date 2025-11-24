@@ -24,7 +24,7 @@ public class ActivityService {
     }
 
     public List<Activity> getActivitiesByEventId(Long eventId) {
-        return activityRepository.findByEventId(eventId);
+        return activityRepository.findByEventEventId(eventId);
     }
 
     public Activity getActivityById(Long id) {

@@ -2,6 +2,7 @@ package com.fsd.event.controller;
 
 import com.fsd.event.entity.Venue;
 import com.fsd.event.service.VenueService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,12 @@ public class VenueController {
     }
     
     @PostMapping
-    public Venue createVenue(@RequestBody Venue venue) {
+    public Venue createVenue(@Valid @RequestBody Venue venue) {
         return venueService.createVenue(venue);
     }
     
     @PutMapping("/{id}")
-    public Venue updateVenue(@PathVariable Long id, @RequestBody Venue venue) {
+    public Venue updateVenue(@PathVariable Long id, @Valid @RequestBody Venue venue) {
         return venueService.updateVenue(id, venue);
     }
     

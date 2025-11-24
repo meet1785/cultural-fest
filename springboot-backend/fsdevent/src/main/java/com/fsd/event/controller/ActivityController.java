@@ -2,6 +2,7 @@ package com.fsd.event.controller;
 
 import com.fsd.event.entity.Activity;
 import com.fsd.event.service.ActivityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,12 @@ public class ActivityController {
     }
 
     @PostMapping("/event/{eventId}")
-    public Activity createActivity(@PathVariable Long eventId, @RequestBody Activity activity) {
+    public Activity createActivity(@PathVariable Long eventId, @Valid @RequestBody Activity activity) {
         return activityService.createActivity(eventId, activity);
     }
 
     @PutMapping("/{id}")
-    public Activity updateActivity(@PathVariable Long id, @RequestBody Activity activity) {
+    public Activity updateActivity(@PathVariable Long id, @Valid @RequestBody Activity activity) {
         return activityService.updateActivity(id, activity);
     }
 

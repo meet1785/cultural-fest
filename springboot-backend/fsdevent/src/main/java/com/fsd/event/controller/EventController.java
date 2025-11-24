@@ -2,6 +2,7 @@ package com.fsd.event.controller;
 
 import com.fsd.event.entity.Event;
 import com.fsd.event.service.EventService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,12 @@ public class EventController {
     }
 
     @PostMapping
-    public Event createEvent(@RequestBody Event event) {
+    public Event createEvent(@Valid @RequestBody Event event) {
         return eventService.createEvent(event);
     }
 
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable Long id, @RequestBody Event event) {
+    public Event updateEvent(@PathVariable Long id, @Valid @RequestBody Event event) {
         return eventService.updateEvent(id, event);
     }
 
